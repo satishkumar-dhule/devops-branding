@@ -1,11 +1,7 @@
-To add badges for build, test, and deploy status in your `README.md` file, you'll need to include the appropriate badges from GitHub Actions. Here's an example of how to modify your README to include them:
+![Build Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/build-test-lint-and-deploy.yml?branch=main)
+![Test Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/test.yml?branch=main)
+![Deploy Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/deploy.yml?branch=main)
 
-```md
-# DevOps Branding
-
-![Build Status](https://img.shields.io/github/workflow/status/satishkumar-dhule/devops-branding/Build%2C%20Test%2C%20Lint%2C%20and%20Deploy)
-![Test Status](https://img.shields.io/github/workflow/status/satishkumar-dhule/devops-branding/Test%20Job)
-![Deploy Status](https://img.shields.io/github/workflow/status/satishkumar-dhule/devops-branding/Deploy%20Job)
 
 This repository provides a collection of tools and resources designed to enhance DevOps practices by integrating branding and automation into the workflow. It includes customizable configurations, scripts, and utilities that streamline DevOps processes, making them more efficient and productive for the teams involved.
 
