@@ -11,12 +11,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 'v22.12.0'
+          node-version: '22.x'
 
       - name: Cache Node.js dependencies
         uses: actions/cache@v4
@@ -29,8 +31,16 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run release
+      - name: Print GitHub Token Scopes
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          echo "Checking GH_TOKEN scopes..."
+          curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/ | jq '.'
+
+      - name: Run release with debug logs
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}
+          DEBUG: semantic-release:*
         run: yarn release
