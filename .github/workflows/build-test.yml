@@ -18,7 +18,7 @@ jobs:
           node-version: 'v22.12.0'
 
       - name: Cache Node.js dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -44,7 +44,7 @@ jobs:
           node-version: 'v22.12.0'
 
       - name: Cache Node.js dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -70,7 +70,7 @@ jobs:
           node-version: 'v22.12.0'
 
       - name: Cache Node.js dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -96,7 +96,7 @@ jobs:
           node-version: 'v22.12.0'
 
       - name: Cache Node.js dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
