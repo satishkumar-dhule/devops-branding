@@ -1,7 +1,7 @@
 import http from 'http';
 
-const hostname = '127.0.0.1';
-const port = 3000;
+// Use the dynamic port provided by Railway, or fallback to 3000 for local development
+const port = process.env.PORT || 3000;
 
 const resume = {
   name: "John Doe",
@@ -48,6 +48,6 @@ const server = http.createServer((req, res) => {
   res.end(JSON.stringify(resume, null, 2));
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
