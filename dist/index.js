@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = __importDefault(require("http"));
-const hostname = '127.0.0.1';
-const port = 3000;
+// Use the dynamic port provided by Railway, or fallback to 3000 for local development
+const port = process.env.PORT || 3000;
 const resume = {
     name: "John Doe",
     title: "Software Engineer",
@@ -49,6 +49,6 @@ const server = http_1.default.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(resume, null, 2));
 });
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });

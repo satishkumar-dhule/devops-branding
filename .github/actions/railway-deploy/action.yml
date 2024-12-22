@@ -19,14 +19,12 @@ runs:
     - name: Install Railway CLI
       run: curl -fsSL https://railway.app/install.sh | sh
 
-    # - name: Authenticate to Railway
-    #   env:
-    #     RAILWAY_TOKEN: ${{ inputs.railway_token }}
-    #   run: railway login --token $RAILWAY_TOKEN
+    - name: Set Railway Token for Authentication
+      run: |
+        echo "RAILWAY_TOKEN=${{ inputs.railway_token }}" >> $GITHUB_ENV
 
     - name: Link Project and Deploy
       run: |
         railway link ${{ inputs.project_id }}
         railway environment use ${{ inputs.environment }}
         railway up --detach
-
