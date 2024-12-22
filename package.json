@@ -1,9 +1,11 @@
 {
-  "name": "personal",
+  "name": "devops-branding",
   "version": "1.0.0",
   "description": "local dev",
   "main": "dist/index.js",
   "license": "MIT",
+  "repositoryUrl": "https://github.com/satishkumar-dhule/devops-branding",
+
   "scripts": {
     "start": "node dist/index.js",
     "lint": "eslint .",
