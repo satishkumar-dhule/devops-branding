@@ -1,7 +1,11 @@
-Here is a full README in markdown format for your repository:
+To add badges for build, test, and deploy status in your `README.md` file, you'll need to include the appropriate badges from GitHub Actions. Here's an example of how to modify your README to include them:
 
 ```md
 # DevOps Branding
+
+![Build Status](https://img.shields.io/github/workflow/status/satishkumar-dhule/devops-branding/Build%2C%20Test%2C%20Lint%2C%20and%20Deploy)
+![Test Status](https://img.shields.io/github/workflow/status/satishkumar-dhule/devops-branding/Test%20Job)
+![Deploy Status](https://img.shields.io/github/workflow/status/satishkumar-dhule/devops-branding/Deploy%20Job)
 
 This repository provides a collection of tools and resources designed to enhance DevOps practices by integrating branding and automation into the workflow. It includes customizable configurations, scripts, and utilities that streamline DevOps processes, making them more efficient and productive for the teams involved.
 
@@ -66,4 +70,4 @@ We welcome contributions to the project! To get involved:
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 ```
 
-You can copy and paste this directly into your `README.md` file. Let me know if you'd like to add any additional sections or details!
+Replace the URL in the badges with the appropriate URL for your workflow name. You can find the correct URLs by visiting your GitHub Actions page for each workflow and getting the badge markdown from there.
