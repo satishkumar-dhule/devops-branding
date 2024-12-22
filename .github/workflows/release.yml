@@ -45,6 +45,6 @@ jobs:
           DEBUG: semantic-release:*
         run: |-
           unset GITHUB_TOKEN
-          echo $GITHUB_TOKEN | gh auth login --with-token
+          echo $NPM_TOKEN | gh auth login --with-token
           gh auth status
           yarn release
