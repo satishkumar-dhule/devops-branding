@@ -40,7 +40,7 @@ jobs:
 
       - name: Run release with debug logs
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}
           DEBUG: semantic-release:*
         run: yarn release
