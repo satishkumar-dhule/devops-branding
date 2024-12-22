@@ -65,6 +65,3 @@ We welcome contributions to the project! To get involved:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-```
-
-Replace the URL in the badges with the appropriate URL for your workflow name. You can find the correct URLs by visiting your GitHub Actions page for each workflow and getting the badge markdown from there.
