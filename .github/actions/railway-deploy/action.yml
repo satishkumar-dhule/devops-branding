@@ -28,8 +28,6 @@ runs:
     - name: Link Project and Deploy
       run: |
         export RAILWAY_TOKEN=${{ inputs.railway_token }}
-        # railway link -p ${{ inputs.project_id }}
-        # railway environment use ${{ inputs.environment }}
-        # railway up --detach
         railway status
+        railway up --detach
       shell: bash
