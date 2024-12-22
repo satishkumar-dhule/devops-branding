@@ -1,0 +1,32 @@
+name: 'Railway Deploy'
+description: 'Deploy to Railway using Railway CLI'
+inputs:
+  project_id:
+    description: 'The Railway Project ID to link'
+    required: true
+    type: string
+  environment:
+    description: 'The Railway environment (e.g., qa, staging, production)'
+    required: true
+    type: string
+  railway_token:
+    description: 'Railway Authentication Token'
+    required: true
+    type: string
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Railway CLI
+      run: curl -fsSL https://railway.app/install.sh | sh
+
+    # - name: Authenticate to Railway
+    #   env:
+    #     RAILWAY_TOKEN: ${{ inputs.railway_token }}
+    #   run: railway login --token $RAILWAY_TOKEN
+
+    - name: Link Project and Deploy
+      run: |
+        railway link ${{ inputs.project_id }}
+        railway environment use ${{ inputs.environment }}
+        railway up --detach
+

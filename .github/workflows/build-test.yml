@@ -29,3 +29,10 @@ jobs:
 
       - name: Run tests
         run: yarn test
+
+      - name: Deploy to Railway
+        uses: ./.github/actions/railway-deploy
+        with:
+          project_id: ${{ secrets.QA_PROJECT_ID }} 
+          environment: 'qa'              
+          railway_token: ${{ secrets.QA_RAILWAY_TOKEN }}
