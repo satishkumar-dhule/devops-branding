@@ -48,19 +48,5 @@ jobs:
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}
           DEBUG: semantic-release:*
         run: |-
-          unset GITHUB_TOKEN
-          env
-          response=$(curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/user)
-
-          # Parse username and email
-          username=$(echo "$response" | jq -r '.login')
-          email=$(echo "$response" | jq -r '.email')
-          echo "GitHub Username: $username"
-          echo "GitHub Email: $email"
-
-          # Set git config
-          git config --global user.name "$username"
-          git config --global user.email "$email"
-          echo $NPM_TOKEN | gh auth login --with-token
           gh auth status
           yarn release
