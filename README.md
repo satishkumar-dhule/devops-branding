@@ -1,6 +1,6 @@
-![Build Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/build-test-lint-and-deploy.yml?branch=main)
-![Test Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/test.yml?branch=main)
-![Deploy Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/deploy.yml?branch=main)
+![Build Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/build-test.yml?branch=main)
+![Test Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/build-test.yml?branch=main)
+![Deploy Status](https://img.shields.io/github/actions/workflow/status/satishkumar-dhule/devops-branding/build-test.yml?branch=main)
 
 
 This repository provides a collection of tools and resources designed to enhance DevOps practices by integrating branding and automation into the workflow. It includes customizable configurations, scripts, and utilities that streamline DevOps processes, making them more efficient and productive for the teams involved.
