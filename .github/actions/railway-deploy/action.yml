@@ -29,5 +29,5 @@ runs:
       run: |
         export RAILWAY_TOKEN=${{ inputs.railway_token }}
         railway status
-        railway up --detach
+        railway up --service nodejs --detach
       shell: bash
