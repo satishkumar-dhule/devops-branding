@@ -49,8 +49,7 @@ jobs:
 
           # Parse username and email
           username=$(echo "$response" | jq -r '.login')
-          email=$(curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/user/emails | jq -r '[.[] | select(.primary)][0].email')
-
+          email=$(echo "$response" | jq -r '.email')
           echo "GitHub Username: $username"
           echo "GitHub Email: $email"
 
