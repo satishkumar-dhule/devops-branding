@@ -45,6 +45,7 @@ jobs:
           DEBUG: semantic-release:*
         run: |-
           unset GITHUB_TOKEN
+          env
           response=$(curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/user)
 
           # Parse username and email
