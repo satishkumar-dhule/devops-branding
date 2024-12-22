@@ -43,7 +43,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: test  # Ensures test job runs first
+    needs: lint  # Ensures lint job runs first
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -61,7 +61,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # Ensures build job runs first
+    needs: [test, build]  # Ensures both test and build jobs are complete before deploying
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
