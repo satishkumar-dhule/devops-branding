@@ -4,7 +4,11 @@
   "description": "local dev",
   "main": "dist/index.js",
   "license": "MIT",
-  "repositoryUrl": "https://github.com/satishkumar-dhule/devops-branding.git",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/satishkumar-dhule/devops-branding.git"
+  },
   "scripts": {
     "start": "node dist/index.js",
     "lint": "eslint .",
