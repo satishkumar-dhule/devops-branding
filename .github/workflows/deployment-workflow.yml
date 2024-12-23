@@ -36,8 +36,6 @@ jobs:
       - name: Deploy to Railway
         uses: ./.github/actions/railway-deploy
         with:
-          project_id: ${{ secrets.INT_PROJECT_ID }}
-          environment: 'int'
           railway_token: ${{ secrets.INT_RAILWAY_TOKEN }}
 
   deploy-stage:
@@ -84,8 +82,6 @@ jobs:
       - name: Deploy to Railway
         uses: ./.github/actions/railway-deploy
         with:
-          project_id: ${{ secrets.STAGE_PROJECT_ID }}
-          environment: 'staging'
           railway_token: ${{ secrets.STAGE_RAILWAY_TOKEN }}
 
   deploy-prod:
@@ -132,6 +128,4 @@ jobs:
       - name: Deploy to Railway
         uses: ./.github/actions/railway-deploy
         with:
-          project_id: ${{ secrets.PROD_PROJECT_ID }}
-          environment: 'production'
           railway_token: ${{ secrets.PROD_RAILWAY_TOKEN }}
