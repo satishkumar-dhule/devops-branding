@@ -3,17 +3,19 @@ name: Deploy to Railway
 on:
   release:
     types:
-      - published
+      - created # Trigger on new semantic release
+  workflow_dispatch: # Allows manual trigger of the workflow
 
 jobs:
   deploy-int:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '22'
 
@@ -34,28 +36,50 @@ jobs:
       - name: Deploy to Railway
         uses: ./.github/actions/railway-deploy
         with:
-          project_id: ${{ secrets.QA_PROJECT_ID }}
-          environment: 'qa'
-          railway_token: ${{ secrets.QA_RAILWAY_TOKEN }}
+          project_id: ${{ secrets.INT_PROJECT_ID }}
+          environment: 'int'
+          railway_token: ${{ secrets.INT_RAILWAY_TOKEN }}
 
   deploy-stage:
     runs-on: ubuntu-latest
     needs: [deploy-int]
     environment:
       name: staging
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Await approval for Stage Deployment
         uses: actions/github-script@v4
         with:
           script: |
-            const { context, github } = require('@actions/github');
             const { owner, repo } = context.repo;
             await github.issues.createComment({
               owner,
               repo,
-              issue_number: context.payload.release.id,
+              issue_number: context.payload.release.id || 0,
               body: 'Please approve the deployment to staging.'
             });
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build project
+        run: yarn build
 
       - name: Deploy to Railway
         uses: ./.github/actions/railway-deploy
@@ -69,19 +93,41 @@ jobs:
     needs: [deploy-stage]
     environment:
       name: production
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Await approval for Production Deployment
         uses: actions/github-script@v4
         with:
           script: |
-            const { context, github } = require('@actions/github');
             const { owner, repo } = context.repo;
             await github.issues.createComment({
               owner,
               repo,
-              issue_number: context.payload.release.id,
+              issue_number: context.payload.release.id || 0,
               body: 'Please approve the deployment to production.'
             });
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build project
+        run: yarn build
 
       - name: Deploy to Railway
         uses: ./.github/actions/railway-deploy
