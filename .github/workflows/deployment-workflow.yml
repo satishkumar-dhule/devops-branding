@@ -31,12 +31,12 @@ jobs:
       - name: Build project
         run: yarn build
 
-      - name: Deploy to Int Environment
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_INT_TOKEN }}
-        run: |
-          yarn global add railway
-          railway up --detach
+      - name: Deploy to Railway
+        uses: ./.github/actions/railway-deploy
+        with:
+          project_id: ${{ secrets.QA_PROJECT_ID }}
+          environment: 'qa'
+          railway_token: ${{ secrets.QA_RAILWAY_TOKEN }}
 
   deploy-stage:
     runs-on: ubuntu-latest
@@ -57,35 +57,12 @@ jobs:
               body: 'Please approve the deployment to staging.'
             });
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Deploy to Railway
+        uses: ./.github/actions/railway-deploy
         with:
-          node-version: '22'
-
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build project
-        run: yarn build
-
-      - name: Deploy to Stage Environment
-        id: deploy-stage
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_STAGE_TOKEN }}
-        run: |
-          yarn global add railway
-          railway up --detach
+          project_id: ${{ secrets.STAGE_PROJECT_ID }}
+          environment: 'staging'
+          railway_token: ${{ secrets.STAGE_RAILWAY_TOKEN }}
 
   deploy-prod:
     runs-on: ubuntu-latest
@@ -106,31 +83,9 @@ jobs:
               body: 'Please approve the deployment to production.'
             });
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Deploy to Railway
+        uses: ./.github/actions/railway-deploy
         with:
-          node-version: '22'
-
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build project
-        run: yarn build
-
-      - name: Deploy to Production Environment
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_PROD_TOKEN }}
-        run: |
-          yarn global add railway
-          railway up --detach
+          project_id: ${{ secrets.PROD_PROJECT_ID }}
+          environment: 'production'
+          railway_token: ${{ secrets.PROD_RAILWAY_TOKEN }}
