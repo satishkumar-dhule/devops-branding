@@ -45,13 +45,13 @@ jobs:
       name: staging
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Await approval for Stage Deployment
         uses: ./.github/actions/approval-check
         with:
           environment: staging
-
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -84,13 +84,14 @@ jobs:
       name: Production
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Await approval for Production Deployment
         uses: ./.github/actions/approval-check
         with:
           environment: production
-
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
