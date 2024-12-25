@@ -3,11 +3,11 @@ name: Deploy to Railway
 on:
   release:
     types:
-      - created # Trigger on new semantic release
-  workflow_dispatch: # Allows manual trigger of the workflow
+      - created  # Trigger on new semantic release
+  workflow_dispatch:  # Allows manual trigger of the workflow
 
 jobs:
-  deploy-int:
+  deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
@@ -33,19 +33,18 @@ jobs:
       - name: Build project
         run: yarn build
 
-      - name: Deploy to Railway
+      - name: Deploy to Railway (Int)
         uses: ./.github/actions/railway-deploy
         with:
           railway_token: ${{ secrets.INT_RAILWAY_TOKEN }}
 
-  deploy-stage:
+  deploy-to-staging:
     runs-on: ubuntu-latest
-    needs: [deploy-int]
+    needs: deploy
     environment:
       name: staging
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -68,16 +67,16 @@ jobs:
       - name: Build project
         run: yarn build
 
-      - name: Deploy to Railway
+      - name: Deploy to Railway (Stage)
         uses: ./.github/actions/railway-deploy
         with:
           railway_token: ${{ secrets.STAGE_RAILWAY_TOKEN }}
 
-  deploy-prod:
+  deploy-to-production:
     runs-on: ubuntu-latest
-    needs: [deploy-stage]
+    needs: deploy-to-staging
     environment:
-      name: Production
+      name: production
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout code
@@ -102,7 +101,7 @@ jobs:
       - name: Build project
         run: yarn build
 
-      - name: Deploy to Railway
+      - name: Deploy to Railway (Prod)
         uses: ./.github/actions/railway-deploy
         with:
           railway_token: ${{ secrets.PROD_RAILWAY_TOKEN }}
