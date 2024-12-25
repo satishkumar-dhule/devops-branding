@@ -1,0 +1,58 @@
+name: 'Approval Check'
+description: 'Checks the approval status of the environment and prints the status.'
+
+inputs:
+  environment:
+    description: 'The environment to check approval for.'
+    required: true
+  github_token:
+    description: 'The GitHub token used for authentication.'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check Approval Status
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const environmentName = '${{ inputs.environment }}';
+          const githubToken = '${{ inputs.github_token }}';
+          
+          const approvalApiUrl = `https://api.github.com/repos/${{ github.repository }}/deployment_statuses`;
+          
+          try {
+            // Fetch the approval status of the environment
+            const approvalResponse = await fetch(approvalApiUrl, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${githubToken}`,
+              },
+            });
+
+            if (!approvalResponse.ok) {
+              throw new Error(`Error fetching deployment status: ${approvalResponse.statusText}`);
+            }
+
+            const approvalData = await approvalResponse.json();
+
+            // Debugging output to check the structure of the data
+            console.log('Approval Data:', approvalData);
+
+            // Ensure approvalData is an array before using .find()
+            if (Array.isArray(approvalData)) {
+              const approvalStatus = approvalData.find(status => status.environment === environmentName);
+
+              // Print a message when the environment is approved
+              if (approvalStatus && approvalStatus.state === 'success') {
+                console.log(`✅ Environment ${environmentName} has been approved.`);
+              } else {
+                console.log(`⏳ Waiting for approval for environment: ${environmentName}`);
+              }
+            } else {
+              console.error('Expected approvalData to be an array, but got:', typeof approvalData);
+            }
+
+          } catch (error) {
+            console.error('Error occurred while checking approval status:', error);
+          }
