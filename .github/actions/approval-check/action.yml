@@ -21,22 +21,38 @@ runs:
           
           const approvalApiUrl = `https://api.github.com/repos/${{ github.repository }}/deployment_statuses`;
           
-          // Fetch the approval status of the environment
-          const approvalResponse = await fetch(approvalApiUrl, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${githubToken}`
+          try {
+            // Fetch the approval status of the environment
+            const approvalResponse = await fetch(approvalApiUrl, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${githubToken}`,
+              },
+            });
+
+            if (!approvalResponse.ok) {
+              throw new Error(`Error fetching deployment status: ${approvalResponse.statusText}`);
             }
-          });
-          
-          const approvalData = await approvalResponse.json();
-          
-          // Find the deployment status for the environment
-          const approvalStatus = approvalData.find(status => status.environment === environmentName);
-          
-          // Print a message when the environment is approved
-          if (approvalStatus && approvalStatus.state === 'success') {
-            console.log(`✅ Environment ${environmentName} has been approved.`);
-          } else {
-            console.log(`⏳ Waiting for approval for environment: ${environmentName}`);
+
+            const approvalData = await approvalResponse.json();
+
+            // Debugging output to check the structure of the data
+            console.log('Approval Data:', approvalData);
+
+            // Ensure approvalData is an array before using .find()
+            if (Array.isArray(approvalData)) {
+              const approvalStatus = approvalData.find(status => status.environment === environmentName);
+
+              // Print a message when the environment is approved
+              if (approvalStatus && approvalStatus.state === 'success') {
+                console.log(`✅ Environment ${environmentName} has been approved.`);
+              } else {
+                console.log(`⏳ Waiting for approval for environment: ${environmentName}`);
+              }
+            } else {
+              console.error('Expected approvalData to be an array, but got:', typeof approvalData);
+            }
+
+          } catch (error) {
+            console.error('Error occurred while checking approval status:', error);
           }
