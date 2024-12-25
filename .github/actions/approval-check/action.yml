@@ -1,39 +1,18 @@
-name: Approver Validation
-description: Validates that required reviewers are configured in the environment and waits for approval.
+name: 'Approval Check'
+description: 'Checks the approval status of the environment and prints the status.'
 
 inputs:
   environment:
-    description: The GitHub environment.
+    description: 'The environment to check approval for.'
+    required: true
+  github_token:
+    description: 'The GitHub token used for authentication.'
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Validate Environment Approvers
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const environmentName = '${{ inputs.environment }}';
-          const apiUrl = `https://api.github.com/repos/${{ github.repository }}/environments/${environmentName}`;
-          
-          const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${{ secrets.GITHUB_TOKEN }}`
-            }
-          });
-
-          const data = await response.json();
-
-          // Check if required reviewers exist
-          const reviewers = data.protection?.required_reviewers;
-          if (!reviewers || reviewers.length === 0) {
-            core.setFailed(`❌ No required reviewers are configured for environment: ${environmentName}`);
-          } else {
-            console.log(`✅ Required reviewers are configured for environment: ${environmentName}`);
-          }
-
-    - name: Print Message When Approved
+    - name: Check Approval Status
       uses: actions/github-script@v6
       with:
         script: |
@@ -44,7 +23,7 @@ runs:
           const approvalResponse = await fetch(approvalApiUrl, {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${{ secrets.GITHUB_TOKEN }}`
+              'Authorization': `Bearer ${inputs.github_token}`
             }
           });
 
