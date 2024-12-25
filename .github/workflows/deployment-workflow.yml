@@ -49,12 +49,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Await approval for Stage Deployment
-        uses: ./.github/actions/approval-check
-        with:
-          environment: staging
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -88,14 +82,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Await approval for Production Deployment
-        uses: ./.github/actions/approval-check
-        with:
-          environment: production
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
