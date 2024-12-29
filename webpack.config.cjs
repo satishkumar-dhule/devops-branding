@@ -1,0 +1,38 @@
+const { resolve, join, dirname } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.tsx',
+  output: {
+    path: resolve(__dirname, 'dist'), // Output directory
+    filename: 'index.js', // Output file name
+    clean: true // Clean the output directory before emitting
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: 'ts-loader'
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.json']
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html', // Path to your template HTML file
+      filename: 'index.html'
+    })
+  ],
+  devServer: {
+    static: join(__dirname, 'dist'),
+    compress: true,
+    port: 3000
+  }
+};
